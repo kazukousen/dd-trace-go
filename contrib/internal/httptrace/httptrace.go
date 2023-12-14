@@ -90,6 +90,9 @@ func FinishRequestSpan(s tracer.Span, status int, errorFn func(int) bool, opts .
 		}
 	}
 	s.SetTag(ext.HTTPCode, statusStr)
+	if cfg.setHTTPError && status >= 500 && status < 600 {
+		s.SetTag(ext.Error, fmt.Errorf("%s: %s", statusStr, http.StatusText(status)))
+	}
 	s.Finish(opts...)
 }
 

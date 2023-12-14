@@ -26,6 +26,8 @@ const (
 	envTraceClientIPEnabled = "DD_TRACE_CLIENT_IP_ENABLED"
 	// envServerErrorStatuses is the name of the env var used to specify error status codes on http server spans
 	envServerErrorStatuses = "DD_TRACE_HTTP_SERVER_ERROR_STATUSES"
+	// envSetHTTPErrorDisabled is the name of the env var used to disabled to set HTTP 5xx error to span tags
+	envSetHTTPErrorDisabled = "DD_TRACE_SET_HTTP_ERROR_DISABLED"
 )
 
 // defaultQueryStringRegexp is the regexp used for query string obfuscation if `envQueryStringRegexp` is empty.
@@ -36,6 +38,7 @@ type config struct {
 	queryString       bool           // reports whether the query string should be included in the URL span tag.
 	traceClientIP     bool
 	isStatusError     func(statusCode int) bool
+	setHTTPError      bool
 }
 
 // ResetCfg sets local variable cfg back to its defaults (mainly useful for testing)
@@ -49,6 +52,7 @@ func newConfig() config {
 		queryStringRegexp: defaultQueryStringRegexp,
 		traceClientIP:     internal.BoolEnv(envTraceClientIPEnabled, false),
 		isStatusError:     isServerError,
+		setHTTPError:      !internal.BoolEnv(envSetHTTPErrorDisabled, false),
 	}
 	v := os.Getenv(envServerErrorStatuses)
 	if fn := GetErrorCodesFromInput(v); fn != nil {
