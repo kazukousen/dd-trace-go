@@ -1,6 +1,7 @@
 Latest DD major version of confluentinc/confluent-kafka-go: 2
 Latest DD major version of dimfeld/httptreemux: 5
 Latest DD major version of elastic/go-elasticsearch: 8
+New latest major version of elastic/go-elasticsearch available: 9
 Latest DD major version of emicklei/go-restful: 3
 Latest DD major version of go-chi/chi: 5
 Latest DD major version of go-pg/pg: 10
